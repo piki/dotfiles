@@ -1,4 +1,64 @@
-syntax on
+" Set up vim for color xterms
+if &term =~ "xterm"
+  set background=dark
+  set t_Co=16
+  set t_Sf=[3%p1%dm
+  set t_Sb=[4%p1%dm
+endif
 
-" Wrap gitcommit file types at the appropriate length
-filetype indent plugin on
+syntax on
+set noautoindent
+set nosmartindent
+
+fun! s:DetectRuby()
+    if getline(1) == '#!/usr/bin/env shell-ruby'
+        set filetype=ruby
+    endif
+endfun
+
+autocmd BufRead */github/shell/bin/* call s:DetectRuby()
+
+augroup editc
+au BufNewFile,BufReadPost *.c,*.cc,*.cpp set ai
+au BufNewFile,BufReadPost *.c,*.cc,*.cpp set si
+au BufNewFile,BufReadPost *.c,*.cc,*.cpp set tw=0
+augroup END
+
+au BufNewFile,BufReadPost *.go set filetype=go
+
+set ts=2
+set sw=2
+
+" Tweak the colors for C/C++/Java
+hi PreProc ctermfg=10 guifg=Green
+hi Comment ctermfg=7 guifg=Grey
+hi Constant ctermfg=14 guifg=Cyan
+hi Identifier ctermfg=11 guifg=Yellow
+hi Type ctermfg=11 guifg=Yellow
+hi Statement ctermfg=11 guifg=Yellow
+hi Normal guifg=White guibg=#000030
+hi Folded guifg=White guibg=#000090
+
+set tw=74
+map <C-J> gq}
+
+" autoselect, right-hand scrollbar
+set guioptions=ar
+" set guioptions=argmt
+
+au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal g'\"" | endif
+
+"*****************************************************************
+""* Commands
+"*****************************************************************
+:command! -nargs=0 FOLD call <SID>OutlineToggle() 
+
+map <silent> <F12> :FOLD<CR>
+
+set smartcase
+set ignorecase
+set incsearch
+
+"set expandtab  " sigh
+
+set listchars+=precedes:<,extends:>
