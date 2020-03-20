@@ -59,6 +59,6 @@ set smartcase
 set ignorecase
 set incsearch
 
-"set expandtab  " sigh
+set expandtab  " sigh
 
 set listchars+=precedes:<,extends:>
